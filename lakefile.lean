@@ -13,8 +13,7 @@ lean_lib NashBargaining where
     `NashBargaining.Basic,
     `NashBargaining.Existence,
     `NashBargaining.Uniqueness,
-    `NashBargaining.Characterization,
-    `NashBargaining.Palomar]
+    `NashBargaining.Characterization]
 
 @[default_target]
 lean_lib Challenge where

@@ -1,1 +1,4 @@
 import NashBargaining.Basic
+import NashBargaining.Existence
+import NashBargaining.Uniqueness
+import NashBargaining.Characterization
