@@ -1,0 +1,156 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Nash bargaining solution axiomatic characterization"
+  description: >-
+    Formalizes two-player bargaining problems with compact convex feasible
+    sets, the four Nash axioms (Pareto optimality, symmetry, invariance to
+    positive affine transformations, independence of irrelevant alternatives),
+    and the Nash product. It proves existence and uniqueness of the Nash
+    product maximizer, shows the maximizer satisfies the four axioms, and
+    proves Nash's characterization: any bargaining solution satisfying the
+    four axioms selects the Nash product maximizer. This is a reusable
+    formalization artifact, not a claim of new mathematics.
+  authors:
+    - "Arthur Freitas Ramos"
+  license: "BSD-3-Clause"
+  responsible_maintainers:
+    - "Arthur Freitas Ramos"
+
+classification:
+  arxiv: ["math.LO", "cs.GT"]
+  msc2020: ["91A12"]
+
+sources:
+  - title: "The Bargaining Problem"
+    authors:
+      - "John F. Nash"
+    id: "https://doi.org/10.2307/1907266"
+    type: "article"
+    location: "https://doi.org/10.2307/1907266"
+    relationship: "formalizes"
+    author_endorsement: "not-contacted"
+    note: >-
+      Introduces the Nash bargaining solution as the maximizer of the product
+      of utility gains and proves it is the unique solution satisfying Pareto
+      optimality, symmetry, invariance to positive affine transformations, and
+      independence of irrelevant alternatives (Econometrica, 1950).
+
+status:
+  scope: >-
+    The library formalizes two-player bargaining problems (compact convex
+    feasible utility sets with a disagreement point), the Nash product, its
+    maximizer's existence and uniqueness, the four Nash axioms as predicates
+    on bargaining solutions, and both directions of the axiomatic
+    characterization. Challenge.lean repeats the compared statements with
+    four deliberate proof holes; those statement holes are excluded from the
+    implementation sorry_count.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["gpt-6-luna (Codex CLI)"]
+      framework: "Lean 4 and Mathlib"
+      tool_setup: "Pinned Lean/Mathlib builds, closure-safe Challenge compilation, and Comparator-ready metadata."
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "subscription-based"
+        hardware: "local machine"
+      prompting_notes: "The final definitions, statements, and proofs are checked by Lean's kernel."
+  spend_usd: "subscription-based"
+  notes: "AI assistance was used for proof engineering. The final definitions, statements, and proofs are checked by Lean's kernel."
+
+fidelity:
+  divergences: >-
+    Two-player bargaining only; feasible utility sets are compact and convex
+    subsets of the plane; the Nash solution maximizes the product of utility
+    gains over individually rational outcomes.
+
+alignment:
+  namespace: "NashBargaining.Palomar"
+  statements:
+    - source: "Bargaining problem"
+      lean: "NashBargaining.Problem"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "A compact convex feasible utility set with a disagreement point and a strictly dominating outcome."
+    - source: "Nash product"
+      lean: "NashBargaining.nashProduct"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "The product of the players' utility gains over the disagreement point."
+    - source: "Nash product maximizer"
+      lean: "NashBargaining.IsNashMaximizer"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "An individually rational feasible outcome maximizing the Nash product."
+    - source: "Bargaining solution"
+      lean: "NashBargaining.Solution"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "A choice of feasible outcome for every bargaining problem."
+    - source: "Pareto optimality axiom"
+      lean: "NashBargaining.Pareto"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "No feasible outcome weakly dominates the chosen one."
+    - source: "Symmetry axiom"
+      lean: "NashBargaining.Symmetric"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "Symmetric problems get symmetric outcomes."
+    - source: "Affine invariance axiom"
+      lean: "NashBargaining.Invariance"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "The solution commutes with positive affine utility transformations."
+    - source: "Independence of irrelevant alternatives"
+      lean: "NashBargaining.IIA"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "Shrinking the feasible set keeps the choice if it stays feasible."
+    - source: "Nash axioms"
+      lean: "NashBargaining.NashAxioms"
+      module: "NashBargaining/Basic.lean"
+      status: "defined"
+      note: "The conjunction of the four Nash axioms."
+    - source: "Existence of the Nash maximizer"
+      lean: "NashBargaining.Palomar.nashMaximizerExists"
+      module: "Solution.lean"
+      status: "proved"
+      note: "The Nash product attains its maximum over individually rational outcomes."
+    - source: "Uniqueness of the Nash maximizer"
+      lean: "NashBargaining.Palomar.nashMaximizerUnique"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Two maximizers coincide, via strict AM-GM on the midpoint."
+    - source: "Nash maximizer satisfies the axioms"
+      lean: "NashBargaining.Palomar.nashSatisfiesAxioms"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Selecting a Nash maximizer per problem satisfies all four axioms."
+    - source: "Axiomatic characterization of the Nash solution"
+      lean: "NashBargaining.Palomar.axiomsCharacterizeNash"
+      module: "Solution.lean"
+      status: "proved"
+      note: "Any solution satisfying the four axioms picks the Nash maximizer, via affine normalization and the tangent hyperplane argument."
+
+acknowledgements: >-
+  Mathlib contributors; John F. Nash for the original axiomatic
+  characterization; and the Palomar Registry project for the
+  statement/solution Comparator workflow.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "none"
+  notes: >-
+    The implementation library and Solution are proof-hole-free under the
+    pinned local build. Challenge contains four deliberate Palomar statement
+    holes, excluded from the implementation sorry_count. Hosted Comparator
+    verification, Palomar editorial review, and registration are separate
+    states and are not inferred from local compilation.
